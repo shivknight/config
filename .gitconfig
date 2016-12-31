@@ -1,0 +1,21 @@
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[user]
+	name = Shiv Pande
+	email = shivknight@gmail.com
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
+[merge]
+	tool = vimdiff
+
+[alias]
+        cp = cherry-pick
+        st = status
+        ci = commit
+        co = checkout
+        br = branch
+        dt = difftool
