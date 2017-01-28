@@ -16,6 +16,8 @@ if filereadable(expand("~/.vimrc.bundles"))
   source ~/.vimrc.bundles.local
 endif
 
+Plugin 'pearofducks/ansible-vim'
+
 call vundle#end()
 
 " ensure ftdetect et al work by including this after the Vundle stuff
