@@ -14,8 +14,9 @@
 
 [alias]
         cp = cherry-pick
-        st = status
+        st = status -sb
         ci = commit
         co = checkout
         br = branch
         dt = difftool
+        lg = log --color --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
