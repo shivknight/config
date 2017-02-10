@@ -4,3 +4,4 @@ set "editor=/bin/bash -lc 'mvim -f $*' mvim"
 source! ~/.vimperatorrc.local
 
 " vim: set ft=vimperator:
+set defsearch=duckduckgo
