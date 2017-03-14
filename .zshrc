@@ -87,3 +87,5 @@ source $ZSH/oh-my-zsh.sh
 set -o vi
 bindkey "^R" history-incremental-search-backward
 [[ -n ${key[Backspace]} ]] && bindkey "${key[Backspace]}" backward-delete-char
+
+SAVEHIST=100000
