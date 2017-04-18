@@ -90,3 +90,7 @@ bindkey "^R" history-incremental-search-backward
 
 SAVEHIST=100000
 zstyle :omz:plugins:ssh-agent agent-forwarding on identities id_ed25519
+
+function salt-host () {
+  ssh -J bastion.$1.msap.io salt.$1.msap.io "sudo salt-key -L" | grep $host
+}
