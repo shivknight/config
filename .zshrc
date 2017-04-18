@@ -92,5 +92,13 @@ SAVEHIST=100000
 zstyle :omz:plugins:ssh-agent agent-forwarding on identities id_ed25519
 
 function salt-host () {
-  ssh -J bastion.$1.msap.io salt.$1.msap.io "sudo salt-key -L" | grep $host
+  env=$1
+  host=$2
+  if [[ $env == prod ]]; then
+    domain=cloudhub.io
+    ssh salt.$env.$domain "sudo salt-key -L" | grep $host
+  else
+    domain=msap.io
+    ssh -J bastion.$env.$domain salt.$env.$domain "sudo salt-key -L" | grep $host
+  fi
 }
