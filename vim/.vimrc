@@ -17,6 +17,8 @@ if filereadable(expand("~/.vimrc.bundles"))
 endif
 
 Plugin 'pearofducks/ansible-vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'Yggdroot/indentLine'
 
 call vundle#end()
 
