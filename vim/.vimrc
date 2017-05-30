@@ -135,3 +135,5 @@ endif
 
 set clipboard=unnamed
 au VimEnter * if &diff | execute 'windo set wrap' | endif
+
+autocmd FileType python setlocal shiftwidth=2 tabstop=2
