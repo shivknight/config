@@ -19,6 +19,8 @@ endif
 Plugin 'pearofducks/ansible-vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'Yggdroot/indentLine'
+Plugin 'hashivim/vim-terraform'
+Plugin 'vim-scripts/AnsiEsc.vim'
 
 call vundle#end()
 
