@@ -20,3 +20,5 @@
         br = branch
         dt = difftool
         lg = log --color --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+[core]
+	excludesfile = /Users/shivpande/.gitignore
