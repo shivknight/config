@@ -105,3 +105,5 @@ function salt-host () {
   echo $salt_host
   echo $salt_host |head -1| pbcopy
 }
+
+autoload zmv
