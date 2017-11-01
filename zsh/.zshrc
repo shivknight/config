@@ -107,3 +107,5 @@ function salt-host () {
 }
 
 autoload zmv
+
+unsetopt share_history
