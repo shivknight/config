@@ -10,7 +10,7 @@
 [difftool]
 	prompt = false
 [merge]
-	tool = vimdiff
+	tool = fugitive
 
 [alias]
         cp = cherry-pick
@@ -22,3 +22,5 @@
         lg = log --color --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 [core]
 	excludesfile = /Users/shivpande/.gitignore
+[mergetool "fugitive"]
+	cmd = vim -f -c \"Gvdiff\" \"$MERGED\"
