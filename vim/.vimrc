@@ -24,6 +24,8 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'Yggdroot/indentLine'
 Plugin 'hashivim/vim-terraform'
 Plugin 'vim-scripts/AnsiEsc.vim'
+Plugin 'chrisbra/vim-diff-enhanced'
+Plugin 'junegunn/fzf'
 
 call vundle#end()
 
