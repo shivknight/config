@@ -89,7 +89,7 @@ bindkey "^R" history-incremental-search-backward
 [[ -n ${key[Backspace]} ]] && bindkey "${key[Backspace]}" backward-delete-char
 
 SAVEHIST=100000
-zstyle :omz:plugins:ssh-agent agent-forwarding on identities id_ed25519
+zstyle :omz:plugins:ssh-agent agent-forwarding identities id_ed25519
 
 function salt-host () {
   env=$1
