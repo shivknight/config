@@ -106,6 +106,10 @@ function salt-host () {
   echo $salt_host |head -1| pbcopy
 }
 
+if [[ -f /usr/local/share/chtf/chtf.sh ]]; then
+    source "/usr/local/share/chtf/chtf.sh"
+fi
+
 autoload zmv
 
 unsetopt share_history
