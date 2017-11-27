@@ -127,3 +127,5 @@ fi
 autoload zmv
 
 unsetopt share_history
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
