@@ -24,3 +24,5 @@
 	excludesfile = /Users/shivpande/.gitignore
 [mergetool "fugitive"]
 	cmd = vim -f -c \"Gvdiff\" \"$MERGED\"
+[commit]
+	verbose = true
