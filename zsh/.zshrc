@@ -146,4 +146,10 @@ autoload zmv
 
 unsetopt share_history
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/$ZSH/custom/fzf.zsh ] && source $ZSH/custom/fzf.zsh
+
+[ -f ~/$ZSH/custom/history-timer.zsh ] && source $ZSH/custom/history-timer.zsh
+[ -f ~/$ZSH/custom/sqlite-history.zsh ] && source $ZSH/custom/sqlite-history.zsh
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd  histdb-update-outcome
+
