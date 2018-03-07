@@ -5,3 +5,6 @@ source! ~/.vimperatorrc.local
 
 " vim: set ft=vimperator:
 set defsearch=duckduckgo
+
+noremap <C-c> <C-v><C-c>
+noremap <C-v> <C-v><C-v>
