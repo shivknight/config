@@ -106,6 +106,24 @@ function salt-host () {
   echo $salt_host |head -1| pbcopy
 }
 
+PATH="/Users/shivpande/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/Users/shivpande/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/Users/shivpande/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/Users/shivpande/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/Users/shivpande/perl5"; export PERL_MM_OPT;
+
+PROFILE_STARTUP=false
+if [[ "$PROFILE_STARTUP" == true ]]; then
+    # http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
+    PS4=$'%D{%M%S%.} %N:%i> '
+    exec 3>&2 2>$HOME/tmp/startlog.$$
+    setopt xtrace prompt_subst
+fi
+# Entirety of my startup file... then
+if [[ "$PROFILE_STARTUP" == true ]]; then
+    unsetopt xtrace
+    exec 2>&3 3>&-
+fi
 
 # Setup tab and window title functions for iterm2
 # iterm behaviour: until window name is explicitly set, it'll always track tab title.
