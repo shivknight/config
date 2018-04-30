@@ -51,7 +51,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git docker)
+plugins=(git docker ssh-agent)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -87,3 +87,8 @@ source $ZSH/oh-my-zsh.sh
 set -o vi
 bindkey "^R" history-incremental-search-backward
 [[ -n ${key[Backspace]} ]] && bindkey "${key[Backspace]}" backward-delete-char
+
+SAVEHIST=100000
+zstyle :omz:plugins:ssh-agent agent-forwarding identities id_ed25519
+
+[ -f ~/$ZSH/custom/fzf.zsh ] && source $ZSH/custom/fzf.zsh

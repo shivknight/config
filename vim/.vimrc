@@ -3,6 +3,9 @@ set nocompatible
 
 " enable syntax highlighting
 syntax enable
+if &diff
+    syntax off
+endif
 
 " configure Vundle
 filetype on " without this vim emits a zero exit status, later, because of :ft off
@@ -17,6 +20,11 @@ if filereadable(expand("~/.vimrc.bundles"))
 endif
 
 Plugin 'pearofducks/ansible-vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'Yggdroot/indentLine'
+Plugin 'vim-scripts/AnsiEsc.vim'
+Plugin 'chrisbra/vim-diff-enhanced'
+Plugin 'junegunn/fzf'
 
 call vundle#end()
 
@@ -133,3 +141,5 @@ endif
 
 set clipboard=unnamed
 au VimEnter * if &diff | execute 'windo set wrap' | endif
+
+autocmd FileType python setlocal shiftwidth=2 tabstop=2
