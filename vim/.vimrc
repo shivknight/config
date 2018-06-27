@@ -19,13 +19,17 @@ if filereadable(expand("~/.vimrc.bundles"))
   source ~/.vimrc.bundles.local
 endif
 
+Plugin 'gmarik/Vundle.vim'
 Plugin 'pearofducks/ansible-vim'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-surround'
 Plugin 'Yggdroot/indentLine'
 Plugin 'hashivim/vim-terraform'
 Plugin 'vim-scripts/AnsiEsc.vim'
 Plugin 'chrisbra/vim-diff-enhanced'
 Plugin 'junegunn/fzf'
+Plugin 'adelarsq/vim-matchit'
+Plugin 'will133/vim-dirdiff'
 
 call vundle#end()
 
