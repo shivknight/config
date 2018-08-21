@@ -152,4 +152,3 @@ unsetopt share_history
 [ -f ~/$ZSH/custom/sqlite-history.zsh ] && source $ZSH/custom/sqlite-history.zsh
 autoload -Uz add-zsh-hook
 add-zsh-hook precmd  histdb-update-outcome
-
