@@ -86,6 +86,7 @@ source $ZSH/oh-my-zsh.sh
 #
 set -o vi
 bindkey "^R" history-incremental-search-backward
+bindkey "^?" backward-delete-char
 [[ -n ${key[Backspace]} ]] && bindkey "${key[Backspace]}" backward-delete-char
 
 SAVEHIST=100000
@@ -152,3 +153,12 @@ unsetopt share_history
 [ -f ~/$ZSH/custom/sqlite-history.zsh ] && source $ZSH/custom/sqlite-history.zsh
 autoload -Uz add-zsh-hook
 add-zsh-hook precmd  histdb-update-outcome
+
+function gov-keycloak-multiprovider () {
+  for e in gbuild gstg gstg-rt; do
+    env=$(aws-keycloak -q -p admin-$e env)
+    for v in $env; do
+      echo "TF_${e}_${v}" | tr '-' '_'
+    done
+  done
+}
