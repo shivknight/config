@@ -27,7 +27,7 @@
 #        lg = !"git lg1"
 #        rebaseb = rebase -i $(git merge-base master update_jenkinsfile)
 [core]
-	excludesfile = /Users/shivpande/.gitignore
+	excludesfile = ~/.gitignore
 [mergetool "fugitive"]
 	cmd = vim -f -c \"Gvdiff\" \"$MERGED\"
 [commit]
@@ -42,4 +42,4 @@
 	allowed = AKIAIOSFODNN7EXAMPLE
 	allowed = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 [init]
-	templateDir = /Users/shivpande/.git-templates/git-secrets
+	templateDir = ~/.git-templates/git-secrets
