@@ -45,3 +45,5 @@
 	templateDir = ~/.git-templates/git-secrets
 [pager]
 	branch = false
+[rebase]
+	autosquash = true
