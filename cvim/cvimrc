@@ -1,0 +1,2 @@
+map u lastClosedTab
+let blacklists = ["https://mail.google.com/*"]
