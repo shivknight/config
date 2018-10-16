@@ -24,6 +24,9 @@
         lg = log --color --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
         lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
         lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+	qf = !git fixup && !git autosquash
+	fixup = commit --fixup HEAD
+	autosquash = !GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash HEAD~2
 #        lg = !"git lg1"
 #        rebaseb = rebase -i $(git merge-base master update_jenkinsfile)
 [core]
