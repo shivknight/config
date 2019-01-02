@@ -53,7 +53,9 @@ ZSH_THEME="robbyrussell"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git docker ssh-agent terraform)
 
+
 source $ZSH/oh-my-zsh.sh
+zstyle :omz:plugins:ssh-agent agent-forwarding identities id_ed25519
 
 # User configuration
 
@@ -84,13 +86,13 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
+alias vi="vim"
 set -o vi
 bindkey "^R" history-incremental-search-backward
 bindkey "^?" backward-delete-char
 [[ -n ${key[Backspace]} ]] && bindkey "${key[Backspace]}" backward-delete-char
 
 SAVEHIST=100000
-zstyle :omz:plugins:ssh-agent agent-forwarding identities id_ed25519
 
 function salt-host () {
   env=$1
@@ -152,7 +154,7 @@ unsetopt share_history
 [ -f ~/$ZSH/custom/history-timer.zsh ] && source $ZSH/custom/history-timer.zsh
 [ -f ~/$ZSH/custom/sqlite-history.zsh ] && source $ZSH/custom/sqlite-history.zsh
 autoload -Uz add-zsh-hook
-add-zsh-hook precmd  histdb-update-outcome
+#add-zsh-hook precmd  histdb-update-outcome
 
 function gov-keycloak-multiprovider () {
   for e in gbuild gstg gstg-rt; do
@@ -162,3 +164,6 @@ function gov-keycloak-multiprovider () {
     done
   done
 }
+
+FZF_PATH=/usr/local/opt/fzf/bin
+[ -f $FZF_PATH ] && source $FZF_PATH
