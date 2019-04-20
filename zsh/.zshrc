@@ -132,18 +132,25 @@ unsetopt share_history
 
 [ -f ~/$ZSH/custom/fzf.zsh ] && source $ZSH/custom/fzf.zsh
 
-[ -f ~/$ZSH/custom/history-timer.zsh ] && source $ZSH/custom/history-timer.zsh
-[ -f ~/$ZSH/custom/sqlite-history.zsh ] && source $ZSH/custom/sqlite-history.zsh
+[ -f ~/$ZSH/custom/zsh-histdb/history-timer.zsh ] && source $ZSH/custom/zsh-histdb/history-timer.zsh
+[ -f ~/$ZSH/custom/zsh-histdb/sqlite-history.zsh ] && source $ZSH/custom/zsh-histdb/sqlite-history.zsh
+[ -f ~/$ZSH/custom/zsh-histdb/histdb-interactive.zsh ] && source $ZSH/custom/zsh-histdb/histdb-interactive.zsh
+#bindkey '^r' _histdb-isearch
 autoload -Uz add-zsh-hook
-#add-zsh-hook precmd  histdb-update-outcome
+#add-zsh-hook precmd histdb-update-outcome
 
 function gov-keycloak-multiprovider () {
-  for e in gbuild gstg gstg-rt; do
+#  for e in gbuild gstg gstg-rt gprod gprod-rt gbuild-mst gstg-mst gstg-rt-mst gprod-mst gprod-rt-mst; do
+  for e in gbuild gstg gstg-rt gprod gbuild-mst gstg-mst gstg-rt-mst gprod-mst; do
     env=$(aws-keycloak -q -p admin-$e env)
     for v in $env; do
       echo "TF_${e}_${v}" | tr '-' '_'
     done
   done
+}
+
+function clear_ssh_sockets () {
+  rm -f ~/.ssh/sockets/*
 }
 
 FZF_PATH=/usr/local/opt/fzf/bin
