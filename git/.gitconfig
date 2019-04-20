@@ -27,6 +27,8 @@
 	qf = !git fixup $@ && !git autosquash
 	fixup = commit --fixup HEAD
 	autosquash = !GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash HEAD~2
+	pr = pull-request
+	pushf = push --force-with-lease
 #        lg = !"git lg1"
 #        rebaseb = rebase -i $(git merge-base master update_jenkinsfile)
 [core]
@@ -39,14 +41,17 @@
 	insteadOf = https://github.com/
 [secrets]
 	providers = git secrets --aws-provider
-	patterns = [A-Z0-9]{20}
 	patterns = (\"|')?(AWS|aws|Aws)?_?(SECRET|secret|Secret)?_?(ACCESS|access|Access)?_?(KEY|key|Key)(\"|')?\\s*(:|=>|=)\\s*(\"|')?[A-Za-z0-9/\\+=]{40}(\"|')?
-	patterns = (\"|')?(AWS|aws|Aws)?_?(ACCOUNT|account|Account)_?(ID|id|Id)?(\"|')?\\s*(:|=>|=)\\s*(\"|')?[0-9]{4}\\-?[0-9]{4}\\-?[0-9]{4}(\"|')?
-	allowed = AKIAIOSFODNN7EXAMPLE
-	allowed = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+	patterns = BEGIN.*PRIVATE KEY
 [init]
 	templateDir = ~/.git-templates/git-secrets
 [pager]
 	branch = false
 [rebase]
 	autosquash = true
+[pull]
+	rebase = true
+[remote "origin"]
+	prune = true
+[diff "sopsdiffer"]
+	textconv = sops -d
