@@ -163,3 +163,7 @@ function clear_ssh_sockets () {
 
 FZF_PATH=/usr/local/opt/fzf/bin
 [ -f $FZF_PATH ] && source $FZF_PATH
+
+PATH=~/usr/bin:$PATH
+PATH=$PATH:~/go/bin
+PATH=$PATH:~/Library/Python/3.7/bin
