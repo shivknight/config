@@ -7,6 +7,8 @@ if &diff
     syntax off
 endif
 
+set rtp+=/usr/local/opt/fzf
+
 " configure Vundle
 filetype on " without this vim emits a zero exit status, later, because of :ft off
 filetype off
