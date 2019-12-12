@@ -149,6 +149,14 @@ function gov-keycloak-multiprovider () {
   done
 }
 
+function awskeycloak2config () {
+   env=$1
+   export $(aws-keycloak -p admin-$env env)
+   echo "aws_access_key_id = $AWS_ACCESS_KEY_ID"
+   echo "aws_secret_access_key = $AWS_SECRET_ACCESS_KEY"
+   echo "aws_security_token = $AWS_SESSION_TOKEN"
+}
+
 function clear_ssh_sockets () {
   rm -f ~/.ssh/sockets/*
 }
