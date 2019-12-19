@@ -34,7 +34,7 @@
 [core]
 	excludesfile = ~/.gitignore
 [mergetool "fugitive"]
-	cmd = vim -f -c \"Gvdiff\" \"$MERGED\"
+	cmd = vim -f -c \"Gvdiffsplit!\" \"$MERGED\"
 [commit]
 	verbose = true
 	gpgsign = true
