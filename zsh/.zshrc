@@ -54,8 +54,9 @@ ZSH_THEME="robbyrussell"
 plugins=(git docker ssh-agent terraform)
 
 
+zstyle :omz:plugins:ssh-agent identities shiv.pande@salesforce.com
+zstyle :omz:plugins:ssh-agent agent-forwarding identities shiv.pande@salesforce.com
 source $ZSH/oh-my-zsh.sh
-zstyle :omz:plugins:ssh-agent agent-forwarding identities id_ed25519
 
 # User configuration
 
