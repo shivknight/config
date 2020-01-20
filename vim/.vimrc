@@ -29,7 +29,6 @@ Plugin 'Yggdroot/indentLine'
 Plugin 'hashivim/vim-terraform'
 Plugin 'vim-scripts/AnsiEsc.vim'
 Plugin 'chrisbra/vim-diff-enhanced'
-Plugin 'junegunn/fzf'
 Plugin 'adelarsq/vim-matchit'
 Plugin 'will133/vim-dirdiff'
 Plugin 'fatih/vim-go'
@@ -78,9 +77,6 @@ noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
-noremap <leader>l :Align
-nnoremap <leader>a :Ag<space>
-nnoremap <leader>b :CtrlPBuffer<CR>
 nnoremap <leader>d :NERDTreeToggle<CR>
 nnoremap <leader>f :NERDTreeFind<CR>
 map <C-J> <C-W>j<C-W>_
@@ -88,20 +84,6 @@ map <C-K> <C-W>k<C-W>_
 
 " in case you forgot to sudo
 cnoremap w!! %!sudo tee > /dev/null %
-
-" plugin settings
-let g:ctrlp_match_window = 'order:ttb,max:20'
-let g:NERDSpaceDelims=1
-let g:gitgutter_enabled = 0
-
-" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
-if executable('ag')
-  " Use Ag over Grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-endif
 
 " fdoc is yaml
 autocmd BufRead,BufNewFile *.fdoc set filetype=yaml
