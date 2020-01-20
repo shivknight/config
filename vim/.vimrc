@@ -32,6 +32,8 @@ Plugin 'chrisbra/vim-diff-enhanced'
 Plugin 'junegunn/fzf'
 Plugin 'adelarsq/vim-matchit'
 Plugin 'will133/vim-dirdiff'
+Plugin 'fatih/vim-go'
+Plugin 'preservim/nerdtree'
 
 call vundle#end()
 
@@ -81,12 +83,8 @@ nnoremap <leader>a :Ag<space>
 nnoremap <leader>b :CtrlPBuffer<CR>
 nnoremap <leader>d :NERDTreeToggle<CR>
 nnoremap <leader>f :NERDTreeFind<CR>
-nnoremap <leader>t :CtrlP<CR>
-nnoremap <leader>T :CtrlPClearCache<CR>:CtrlP<CR>
-nnoremap <leader>] :TagbarToggle<CR>
-nnoremap <leader><space> :call whitespace#strip_trailing()<CR>
-nnoremap <leader>g :GitGutterToggle<CR>
-noremap <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+map <C-J> <C-W>j<C-W>_
+map <C-K> <C-W>k<C-W>_
 
 " in case you forgot to sudo
 cnoremap w!! %!sudo tee > /dev/null %
@@ -150,3 +148,13 @@ set clipboard=unnamed
 au VimEnter * if &diff | execute 'windo set wrap' | endif
 
 autocmd FileType python setlocal shiftwidth=2 tabstop=2
+
+" Go configurations
+let g:go_fmt_command = "goimports"    " Run goimports along gofmt on each save
+let g:go_auto_type_info = 1           " Automatically get signature/type info for object under cursor
+" let g:go_highlight_diagnostic_errors=0
+" let g:go_highlight_diagnostic_warnings=0
+let g:go_list_type = "quickfix"
+
+" NERDTree
+autocmd vimenter * NERDTree
