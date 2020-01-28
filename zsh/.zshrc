@@ -88,6 +88,33 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
 alias vi="vim"
+alias vim="nvim"
+
+function setup-pcs-dev-env() {
+  export PCS_METRICS=${PCS_METRICS:=none}
+  export TESTMODE=${TESTMODE:=1}
+  export AWS_ACCESS_KEY_ID=123
+  export AWS_DEFAULT_REGION=us-west-2
+  export AWS_SECRET_ACCESS_KEY=asdf
+  export AWS_SQS_QUEUE=asdf123
+  export HYDRATED_BOM_SQS_QUEUE=blah
+  export HEROKU_API_KEY=${HEROKU_API_KEY:=dummy_heroku_key}
+
+  cat <<HERE
+    Setting env:
+    AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+    PCS_METRICS=${PCS_METRICS:=none}
+    TESTMODE=${TESTMODE:=1}
+    AWS_ACCESS_KEY_ID=123
+    AWS_DEFAULT_REGION=us-west-2
+    AWS_SECRET_ACCESS_KEY=asdf
+    AWS_SQS_QUEUE=asdf123
+    HYDRATED_BOM_SQS_QUEUE=blah
+    HEROKU_API_KEY=${HEROKU_API_KEY:=dummy_heroku_key}
+HERE
+}
+
+
 set -o vi
 bindkey "^R" history-incremental-search-backward
 bindkey "^?" backward-delete-char
@@ -168,3 +195,6 @@ FZF_PATH=/usr/local/opt/fzf/bin
 PATH=~/usr/bin:$PATH
 PATH=$PATH:~/go/bin
 PATH=$PATH:~/Library/Python/3.7/bin
+
+# direnv hook
+eval "$(direnv hook zsh)"
