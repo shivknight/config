@@ -4,8 +4,8 @@
 	required = true
 [user]
 	name = Shiv Pande
-	email = shiv.pande@mulesoft.com
-	signingkey = C88C4BCD23157E61
+	email = shiv.pande@salesforce.com
+	signingkey = F2171C7455BA56E3
 [diff]
 	tool = vimdiff
 [difftool]
@@ -56,3 +56,12 @@
 	prune = true
 [diff "sopsdiffer"]
 	textconv = sops -d
+[credential]
+	helper = !aws --profile CodeCommit codecommit credential-helper $@
+	UseHttpPath = true
+[url "ssh://git@github.com/sfdc-pcg/"]
+  insteadOf = https://github.com/sfdc-pcg/
+[url "git@git.soma.salesforce.com:sfdc-pcg"]
+  insteadOf = https://git.soma.salesforce.com/sfdc-pcg
+[url "git@git.soma.salesforce.com:environments-engine"]
+  insteadOf = https://git.soma.salesforce.com/environments-engine
