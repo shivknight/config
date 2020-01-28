@@ -10,4 +10,5 @@ if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
 
-PATH=$PATH:~/usr/bin
+PATH=~/usr/bin:$PATH
+PATH=$PATH:~/go/bin
