@@ -34,7 +34,7 @@ Plugin 'chrisbra/vim-diff-enhanced'
 Plugin 'adelarsq/vim-matchit'
 Plugin 'will133/vim-dirdiff'
 Plugin 'fatih/vim-go'
-"" Plugin 'preservim/nerdtree'
+Plugin 'preservim/nerdtree'
 Plugin 'junegunn/fzf.vim'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'sebdah/vim-delve'
@@ -155,7 +155,11 @@ noremap <leader>db :DlvToggleBreakpoint<CR>
 " augroup end
 
 " NERDTree
-" autocmd vimenter * NERDTree
+autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+autocmd VimEnter * if argc() == 0 | exe 'NERDTreeFocus' | endif
+noremap - :NERDTreeFocus<CR>
 
 """ fzf
 function! s:fzf_neighbouring_files()
@@ -194,15 +198,15 @@ nnoremap <silent> <C-p> :bprevious<CR>
 nnoremap <silent> <leader>d :bdelete<CR>
 
 """ netrw
-"let g:netrw_browse_split = 1
-let g:netrw_liststyle = 3
-
-let g:netrw_browse_split = 4
-let g:netrw_altv = 1
-let g:netrw_winsize = 25
+" let g:netrw_browse_split = 4
+" let g:netrw_liststyle = 3
+"
+" let g:netrw_browse_split = 4
+" let g:netrw_altv = 1
+" let g:netrw_winsize = 25
 " augroup ProjectDrawer
 "   autocmd!
-"   autocmd VimEnter * :Vexplore
+" "  autocmd VimEnter * :Vexplore
 " augroup END
 
 
