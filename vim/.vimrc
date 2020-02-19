@@ -3,6 +3,8 @@ set nocompatible
 
 " enable syntax highlighting
 syntax enable
+" Temporarily disable until https://github.com/fatih/vim-go/issues/2658 is
+" fixed
 if &diff
     syntax off
 endif
@@ -32,7 +34,7 @@ Plugin 'chrisbra/vim-diff-enhanced'
 Plugin 'adelarsq/vim-matchit'
 Plugin 'will133/vim-dirdiff'
 Plugin 'fatih/vim-go'
-Plugin 'preservim/nerdtree'
+"" Plugin 'preservim/nerdtree'
 Plugin 'junegunn/fzf.vim'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'sebdah/vim-delve'
@@ -127,6 +129,7 @@ au VimEnter * if &diff | execute 'windo set wrap' | endif
 
 autocmd FileType python setlocal shiftwidth=2 tabstop=2
 
+"set switchbuf "usetab"
 
 """ Go configurations
 let g:go_fmt_command = "goimports"    " Run goimports along gofmt on each save
@@ -136,9 +139,13 @@ let g:go_highlight_diagnostic_warnings=0
 let g:go_list_type = "quickfix"
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
+let g:go_auto_sameids = 1
 nnoremap <leader>F :GoDecls<CR>
 noremap <leader>e :cn<CR>
 noremap <leader>E :cp<CR>
+
+"" vim-delv
+noremap <leader>db :DlvToggleBreakpoint<CR>
 
 " Build/Test on save.
 " augroup auto_go
@@ -186,8 +193,18 @@ nnoremap <silent> <C-n> :bnext<CR>
 nnoremap <silent> <C-p> :bprevious<CR>
 nnoremap <silent> <leader>d :bdelete<CR>
 
-
+""" netrw
 "let g:netrw_browse_split = 1
+let g:netrw_liststyle = 3
+
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 25
+" augroup ProjectDrawer
+"   autocmd!
+"   autocmd VimEnter * :Vexplore
+" augroup END
+
 
 " vim-airline
 let g:airline#extensions#tabline#enabled = 1
@@ -220,3 +237,16 @@ function! Smart_TabComplete()
   endif
 endfunction
 inoremap <tab> <c-r>=Smart_TabComplete()<CR>
+
+set updatetime=400
+
+""" Fugitive
+function! s:ToggleBlame()
+    if &l:filetype ==# 'fugitiveblame'
+        close
+    else
+        Gblame
+    endif
+endfunction
+
+nnoremap gb :call <SID>ToggleBlame()<CR>
