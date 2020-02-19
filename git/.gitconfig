@@ -65,3 +65,5 @@
   insteadOf = https://git.soma.salesforce.com/sfdc-pcg
 [url "git@git.soma.salesforce.com:environments-engine"]
   insteadOf = https://git.soma.salesforce.com/environments-engine
+[url "git@git.soma.salesforce.com:"]
+  insteadOf = https://git.soma.salesforce.com/
