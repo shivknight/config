@@ -26,10 +26,12 @@ endif
 Plugin 'gmarik/Vundle.vim'
 Plugin 'pearofducks/ansible-vim'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-rhubarb'
 Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-sensible'
 Plugin 'Yggdroot/indentLine'
 Plugin 'hashivim/vim-terraform'
-Plugin 'vim-scripts/AnsiEsc.vim'
+Plugin 'powerman/vim-plugin-AnsiEsc'
 Plugin 'chrisbra/vim-diff-enhanced'
 Plugin 'adelarsq/vim-matchit'
 Plugin 'will133/vim-dirdiff'
@@ -40,6 +42,7 @@ Plugin 'tomtom/tcomment_vim'
 Plugin 'sebdah/vim-delve'
 Plugin 'tpope/vim-vinegar'
 Plugin 'bling/vim-airline'
+Plugin 'vim-ruby/vim-ruby'
 
 call vundle#end()
 
@@ -163,7 +166,7 @@ noremap - :NERDTreeFocus<CR>
 
 " Prevent opening buffers in NERDTree window
 autocmd FileType nerdtree let t:nerdtree_winnr = bufwinnr('%')
-autocmd BufWinEnter * call PreventBuffersInNERDTree()
+"autocmd BufWinEnter * call PreventBuffersInNERDTree()
 function! PreventBuffersInNERDTree()
   if bufname('#') =~ 'NERD_tree' && bufname('%') !~ 'NERD_tree'
     \ && exists('t:nerdtree_winnr') && bufwinnr('%') == t:nerdtree_winnr
@@ -171,7 +174,7 @@ function! PreventBuffersInNERDTree()
     let bufnum = bufnr('%')
     close
     exe 'b ' . bufnum
-    NERDTree
+"    NERDTree
     wincmd p
   endif
   if exists('g:launching_fzf') | unlet g:launching_fzf | endif
@@ -212,6 +215,7 @@ nnoremap <silent> <C-g>l :call FZFOpen(':BLines')<CR>
 nnoremap <silent> <C-n> :bnext<CR>
 nnoremap <silent> <C-p> :bprevious<CR>
 nnoremap <silent> <leader>d :bdelete<CR>
+nnoremap <silent> X :bdelete<CR>
 
 """ netrw
 " let g:netrw_browse_split = 4
@@ -270,3 +274,5 @@ function! s:ToggleBlame()
 endfunction
 
 nnoremap gb :call <SID>ToggleBlame()<CR>
+
+let g:github_enterprise_urls = ['https://git.soma.salesforce.com']
