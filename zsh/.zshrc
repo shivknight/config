@@ -96,31 +96,7 @@ source $ZSH/oh-my-zsh.sh
 #
 alias vi="vim"
 alias vim="nvim"
-
-function setup-pcs-dev-env() {
-  export PCS_METRICS=${PCS_METRICS:=none}
-  export TESTMODE=${TESTMODE:=1}
-  export AWS_ACCESS_KEY_ID=123
-  export AWS_DEFAULT_REGION=us-west-2
-  export AWS_SECRET_ACCESS_KEY=asdf
-  export AWS_SQS_QUEUE=asdf123
-  export HYDRATED_BOM_SQS_QUEUE=blah
-  export HEROKU_API_KEY=${HEROKU_API_KEY:=dummy_heroku_key}
-
-  cat <<HERE
-    Setting env:
-    AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-    PCS_METRICS=${PCS_METRICS:=none}
-    TESTMODE=${TESTMODE:=1}
-    AWS_ACCESS_KEY_ID=123
-    AWS_DEFAULT_REGION=us-west-2
-    AWS_SECRET_ACCESS_KEY=asdf
-    AWS_SQS_QUEUE=asdf123
-    HYDRATED_BOM_SQS_QUEUE=blah
-    HEROKU_API_KEY=${HEROKU_API_KEY:=dummy_heroku_key}
-HERE
-}
-
+alias dc="docker-compose"
 
 set -o vi
 bindkey "^R" history-incremental-search-backward
@@ -128,21 +104,6 @@ bindkey "^?" backward-delete-char
 [[ -n ${key[Backspace]} ]] && bindkey "${key[Backspace]}" backward-delete-char
 
 SAVEHIST=100000
-
-function salt-host () {
-  env=$1
-  host=$2
-  salt_host=
-  if [[ $env == prod ]]; then
-    domain=cloudhub.io
-    salt_host=$(ssh salt.$env.$domain "sudo salt-key -L" | grep $host)
-  else
-    domain=msap.io
-    salt_host=$(ssh -J bastion.$env.$domain salt.$env.$domain "sudo salt-key -L" | grep $host)
-  fi
-  echo $salt_host
-  echo $salt_host |head -1| pbcopy
-}
 
 # Setup tab and window title functions for iterm2
 # iterm behaviour: until window name is explicitly set, it'll always track tab title.
@@ -174,26 +135,12 @@ unsetopt share_history
 autoload -Uz add-zsh-hook
 #add-zsh-hook precmd histdb-update-outcome
 
-function gov-keycloak-multiprovider () {
-#  for e in gbuild gstg gstg-rt gprod gprod-rt gbuild-mst gstg-mst gstg-rt-mst gprod-mst gprod-rt-mst; do
-  for e in gbuild gstg gstg-rt gprod gbuild-mst gstg-mst gstg-rt-mst gprod-mst; do
-    env=$(aws-keycloak -q -p admin-$e env)
-    for v in $env; do
-      echo "TF_${e}_${v}" | tr '-' '_'
-    done
-  done
-}
-
-function awskeycloak2config () {
-   env=$1
-   export $(aws-keycloak -p admin-$env env)
-   echo "aws_access_key_id = $AWS_ACCESS_KEY_ID"
-   echo "aws_secret_access_key = $AWS_SECRET_ACCESS_KEY"
-   echo "aws_security_token = $AWS_SESSION_TOKEN"
-}
-
 function clear_ssh_sockets () {
   rm -f ~/.ssh/sockets/*
+}
+
+function jdiff () {
+  vimdiff <(jq -S '.' $1) <(jq -S '.' $2)
 }
 
 FZF_PATH=/usr/local/opt/fzf/bin
@@ -202,6 +149,17 @@ FZF_PATH=/usr/local/opt/fzf/bin
 PATH=~/usr/bin:$PATH
 PATH=$PATH:~/go/bin
 PATH=$PATH:~/Library/Python/3.7/bin
+PATH=$PATH:/Users/shiv.pande/git_repos/git.soma.salesforce.com/public-cloud-start/pcs-dev-tools/bin
+PATH=$PATH:/Users/shiv.pande/.gem/ruby/2.3.0/bin
+
+### iTerm2 window title
+if [ $ITERM_SESSION_ID ]; then
+  export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; ':"$PROMPT_COMMAND";
+fi
 
 # direnv hook
 eval "$(direnv hook zsh)"
+
+function amereast1_dnsresolvers () {
+  sudo sh -c 'echo "nameserver 10.2.33.2\nnameserver 10.2.33.3" >> /etc/resolv.conf'
+}
