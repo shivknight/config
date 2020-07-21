@@ -19,6 +19,8 @@
         st = status -sb
         ci = commit
         co = checkout
+        sw = switch
+        re = restore
         br = branch
         dt = difftool
         lg = log --color --left-right --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
@@ -67,3 +69,5 @@
   insteadOf = https://git.soma.salesforce.com/environments-engine
 [url "git@git.soma.salesforce.com:"]
   insteadOf = https://git.soma.salesforce.com/
+[hub]
+	host = git.soma.salesforce.com
