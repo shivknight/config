@@ -31,8 +31,11 @@
 	autosquash = !GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash HEAD~2
 	pr = pull-request
 	pushf = push --force-with-lease
+        gra = git rebase --abort
+        grc = git rebase --continue
 #        lg = !"git lg1"
 #        rebaseb = rebase -i $(git merge-base master update_jenkinsfile)
+        sl = stash list --pretty=format:\"%C(red)%h%C(reset) - %C(dim yellow)(%C(bold magenta)%gd%C(dim yellow))%C(reset) %<(70,trunc)%s %C(green)(%cr) %C(bold blue)<%an>%C(reset)\"
 [core]
 	excludesfile = ~/.gitignore
 [mergetool "fugitive"]
@@ -46,6 +49,8 @@
 	providers = git secrets --aws-provider
 	patterns = (\"|')?(AWS|aws|Aws)?_?(SECRET|secret|Secret)?_?(ACCESS|access|Access)?_?(KEY|key|Key)(\"|')?\\s*(:|=>|=)\\s*(\"|')?[A-Za-z0-9/\\+=]{40}(\"|')?
 	patterns = BEGIN.*PRIVATE KEY
+	patterns = (A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}
+	patterns = (\"|')?(AWS|aws|Aws)?_?(ACCOUNT|account|Account)_?(ID|id|Id)?(\"|')?\\s*(:|=>|=)\\s*(\"|')?[0-9]{4}\\-?[0-9]{4}\\-?[0-9]{4}(\"|')?
 [init]
 	templateDir = ~/.git-templates/git-secrets
 [pager]
@@ -71,3 +76,5 @@
   insteadOf = https://git.soma.salesforce.com/
 [hub]
 	host = git.soma.salesforce.com
+[merge "ours"]
+	driver = false

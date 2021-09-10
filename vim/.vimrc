@@ -1,15 +1,10 @@
-" don't bother with vi compatibility
 set nocompatible
 
 " enable syntax highlighting
 syntax enable
-" Temporarily disable until https://github.com/fatih/vim-go/issues/2658 is
-" fixed
-if &diff
-    syntax off
-endif
 
-set rtp+=/usr/local/opt/fzf
+set rtp+=/usr/local/bin/fzf
+set rtp+=/usr/local/bin/git
 
 " configure Vundle
 filetype on " without this vim emits a zero exit status, later, because of :ft off
@@ -23,7 +18,7 @@ if filereadable(expand("~/.vimrc.bundles"))
   source ~/.vimrc.bundles.local
 endif
 
-Plugin 'gmarik/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
 Plugin 'pearofducks/ansible-vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-rhubarb'
@@ -37,12 +32,15 @@ Plugin 'adelarsq/vim-matchit'
 Plugin 'will133/vim-dirdiff'
 Plugin 'fatih/vim-go'
 Plugin 'preservim/nerdtree'
+Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'sebdah/vim-delve'
 Plugin 'tpope/vim-vinegar'
 Plugin 'bling/vim-airline'
 Plugin 'vim-ruby/vim-ruby'
+Plugin 'towolf/vim-helm'
+Plugin 'alpertuna/vim-header'
 
 call vundle#end()
 
@@ -157,16 +155,15 @@ noremap <leader>db :DlvToggleBreakpoint<CR>
 "   autocmd BufWritePost *_test.go !make test &
 " augroup end
 
-" NERDTree
+""" NERDTree
 autocmd StdinReadPre * let s:std_in=1
-" autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
 autocmd VimEnter * if argc() == 0 | exe 'NERDTreeFocus' | endif
 noremap - :NERDTreeFocus<CR>
 
 " Prevent opening buffers in NERDTree window
 autocmd FileType nerdtree let t:nerdtree_winnr = bufwinnr('%')
-"autocmd BufWinEnter * call PreventBuffersInNERDTree()
+autocmd BufWinEnter * call PreventBuffersInNERDTree()
 function! PreventBuffersInNERDTree()
   if bufname('#') =~ 'NERD_tree' && bufname('%') !~ 'NERD_tree'
     \ && exists('t:nerdtree_winnr') && bufwinnr('%') == t:nerdtree_winnr
@@ -174,24 +171,24 @@ function! PreventBuffersInNERDTree()
     let bufnum = bufnr('%')
     close
     exe 'b ' . bufnum
-"    NERDTree
-    wincmd p
+    NERDTree
   endif
   if exists('g:launching_fzf') | unlet g:launching_fzf | endif
 endfunction
 
+" Focus buffer if it's already open
+au BufEnter * if bufname('#') =~ 'NERD_tree' && bufname('%') !~ 'NERD_tree' && winnr('$') > 1 | b# | exe "normal! \<c-w>\<c-w>" | :blast | endif
+
 """ fzf
+" Neighbouring files
 function! s:fzf_neighbouring_files()
-  let current_file =expand("%")
-  let cwd = fnamemodify(current_file, ':p:h')
+  let cwd = expand("%:~:.:h")
   let command = 'ag -g "" -f ' . cwd . ' --depth 2'
+  echo command
 
-
-  call fzf#run({
-        \ 'source': command,
-        \ 'sink':   'e',
-        \ 'options': '-m -x +s',
-        \ 'window':  'enew' })
+  call fzf#run(fzf#wrap({ 'source': command, 'sink': 'e' }))
+        "\ 'source': command,
+"\ 'options': '-m -x +s'
 endfunction
 
 let g:fzf_files_options =
@@ -199,7 +196,10 @@ let g:fzf_files_options =
 
 command! FZFNeigh call s:fzf_neighbouring_files()
 nnoremap <leader>s :FZFNeigh<CR>
-nnoremap <leader>f :Files<CR>
+nnoremap <leader>f :GFiles<CR>
+" " Try :GFiles, fallback on :Files
+" command! Gfiles_fallback execute (len(system('git rev-parse'))) ? ':Files' : ':GFiles'
+" nnoremap <leader>f :Gfiles_fallback<CR>
 
 function! FZFOpen(command_str)
   if (expand('%') =~# 'NERD_tree' && winnr('$') > 1)
@@ -209,7 +209,7 @@ function! FZFOpen(command_str)
 endfunction
 
 nnoremap <silent> <leader>b :call FZFOpen(':Buffers')<CR>
-nnoremap <silent> <C-g>g :call FZFOpen(':Ag')<CR>
+nnoremap <silent> <leader>G :call FZFOpen(':Ag')<CR>
 nnoremap <silent> <C-g>c :call FZFOpen(':Commands')<CR>
 nnoremap <silent> <C-g>l :call FZFOpen(':BLines')<CR>
 nnoremap <silent> <C-n> :bnext<CR>
@@ -264,15 +264,25 @@ inoremap <tab> <c-r>=Smart_TabComplete()<CR>
 
 set updatetime=400
 
-""" Fugitive
-function! s:ToggleBlame()
-    if &l:filetype ==# 'fugitiveblame'
-        close
-    else
-        Gblame
-    endif
-endfunction
-
-nnoremap gb :call <SID>ToggleBlame()<CR>
 
 let g:github_enterprise_urls = ['https://git.soma.salesforce.com']
+
+""" vim-helm
+autocmd BufRead,BufNewFile */templates/**.tpl set ft=helm
+
+""" Persistent undo
+let target_path = expand('~/.config/vim-persisted-undo/')
+if !isdirectory(target_path)
+    call system('mkdir -p ' . target_path)
+endif
+let &undodir = target_path
+set undofile
+
+""" vim-header
+let g:header_field_filename = 0
+let g:header_field_copyright = '// Copyright © 2021 Salesforce'
+let g:header_field_modified_timestamp = 0
+let g:header_field_timestamp = 0
+let g:header_field_modified_by = 0
+
+nnoremap \z :setlocal foldexpr=(getline(v:lnum)=~@/)?0:(getline(v:lnum-1)=~@/)\\|\\|(getline(v:lnum+1)=~@/)?1:2 foldmethod=expr foldlevel=0 foldcolumn=2<CR>
