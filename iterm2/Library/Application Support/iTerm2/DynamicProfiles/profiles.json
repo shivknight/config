@@ -1,39 +1,25 @@
 {
-"Profiles": [
-{
-  "Ansi 6 Color" : {
-    "Green Component" : 0.73333334922790527,
-    "Red Component" : 0,
-    "Blue Component" : 0.73333334922790527
-  },
+  "Use Non-ASCII Font" : true,
   "Tags" : [
-
+    "Dynamic"
   ],
   "Ansi 12 Color" : {
     "Green Component" : 0.3333333432674408,
     "Red Component" : 0.3333333432674408,
     "Blue Component" : 1
   },
-  "Ansi 7 Color" : {
-    "Green Component" : 0.73333334922790527,
+  "Ansi 1 Color" : {
+    "Green Component" : 0,
     "Red Component" : 0.73333334922790527,
-    "Blue Component" : 0.73333334922790527
+    "Blue Component" : 0
   },
-  "Ansi 8 Color" : {
-    "Green Component" : 0.3333333432674408,
-    "Red Component" : 0.3333333432674408,
-    "Blue Component" : 0.3333333432674408
-  },
+  "AWDS Tab Directory" : "",
   "Bold Color" : {
     "Green Component" : 1,
     "Red Component" : 1,
     "Blue Component" : 1
   },
-  "Ansi 9 Color" : {
-    "Green Component" : 0.3333333432674408,
-    "Red Component" : 1,
-    "Blue Component" : 0.3333333432674408
-  },
+  "Normal Font" : "Monaco 13",
   "Ansi 4 Color" : {
     "Green Component" : 0,
     "Red Component" : 0,
@@ -70,30 +56,34 @@
   },
   "Working Directory" : "\/Users\/shivpande",
   "Blinking Cursor" : true,
-  "AWDS Window Option" : "No",
+  "Space" : 0,
   "Sync Title" : false,
   "Prompt Before Closing 2" : false,
   "BM Growl" : true,
   "Command" : "",
-  "Description" : "Default",
+  "AWDS Window Option" : "No",
   "AWDS Pane Directory" : "",
-  "Disable Window Resizing" : true,
+  "Description" : "Default",
   "Screen" : -1,
   "Selection Color" : {
     "Green Component" : 0.8353000283241272,
     "Red Component" : 0.70980000495910645,
     "Blue Component" : 1
   },
-  "Mouse Reporting" : true,
+  "Dynamic Profile Filename" : "\/Users\/shiv.pande\/Library\/Application Support\/iTerm2\/DynamicProfiles\/profiles.json",
   "AWDS Window Directory" : "",
   "Columns" : 80,
   "Idle Code" : 0,
+  "Background Image Mode" : 0,
+  "Mouse Reporting" : true,
   "Ansi 13 Color" : {
     "Green Component" : 0.3333333432674408,
     "Red Component" : 1,
     "Blue Component" : 1
   },
+  "Disable Window Resizing" : true,
   "Custom Command" : "No",
+  "Use Custom Window Title" : false,
   "ASCII Anti Aliased" : true,
   "Non Ascii Font" : "Monaco 12",
   "Vertical Spacing" : 1,
@@ -299,7 +289,7 @@
       "Action" : 10
     }
   },
-  "Window Type" : 0,
+  "Window Type" : 15,
   "Background Image Location" : "",
   "Blur" : false,
   "Allow Title Setting" : false,
@@ -332,16 +322,16 @@
     "Red Component" : 0,
     "Blue Component" : 0
   },
-  "Transparency" : 0.071273217155257876,
-  "Horizontal Spacing" : 1,
-  "Ansi 1 Color" : {
-    "Green Component" : 0,
-    "Red Component" : 0.73333334922790527,
-    "Blue Component" : 0
-  },
+  "Guid" : "42A83410-B204-40FF-8174-C7078E040F4B",
   "Ansi 2 Color" : {
     "Green Component" : 0.73333334922790527,
     "Red Component" : 0,
+    "Blue Component" : 0
+  },
+  "Custom Directory" : "Recycle",
+  "Ansi 3 Color" : {
+    "Green Component" : 0.73333334922790527,
+    "Red Component" : 0.73333334922790527,
     "Blue Component" : 0
   },
   "Ansi 5 Color" : {
@@ -349,16 +339,26 @@
     "Red Component" : 0.73333334922790527,
     "Blue Component" : 0.73333334922790527
   },
-  "Use Non-ASCII Font" : true,
-  "Guid" : "42A83410-B204-40FF-8174-C7078E040F4B",
-  "AWDS Tab Directory" : "",
-  "Normal Font" : "Monaco 11",
-  "Custom Directory" : "Recycle",
-  "Ansi 3 Color" : {
+  "Ansi 6 Color" : {
+    "Green Component" : 0.73333334922790527,
+    "Red Component" : 0,
+    "Blue Component" : 0.73333334922790527
+  },
+  "Ansi 7 Color" : {
     "Green Component" : 0.73333334922790527,
     "Red Component" : 0.73333334922790527,
-    "Blue Component" : 0
-  }
-}
-]
+    "Blue Component" : 0.73333334922790527
+  },
+  "Ansi 8 Color" : {
+    "Green Component" : 0.3333333432674408,
+    "Red Component" : 0.3333333432674408,
+    "Blue Component" : 0.3333333432674408
+  },
+  "Ansi 9 Color" : {
+    "Green Component" : 0.3333333432674408,
+    "Red Component" : 1,
+    "Blue Component" : 0.3333333432674408
+  },
+  "Transparency" : 0.071273217155257876,
+  "Horizontal Spacing" : 1
 }
