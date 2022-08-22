@@ -97,8 +97,11 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
 alias vi="vim"
-alias vim="nvim"
+# alias vim="nvim"
 alias dc="docker-compose"
+alias gfor="git fetch origin && git rebase origin/master"
+alias gfur="git fetch upstream && git rebase upstream/master"
+alias ghpc="gh pr create -a @me -r '@public-cloud-start/gia2h'"
 
 set -o vi
 bindkey "^R" history-incremental-search-backward
@@ -112,7 +115,7 @@ SAVEHIST=100000
 # So, to have different window and tab titles, iterm_window() must be called
 # first. iterm_both() resets this behaviour and has window track tab title again).
 # Source: http://superuser.com/a/344397
-set_iterm_name() {
+function set_iterm_name() {
   mode=$1; shift
   echo -ne "\033]$mode;$@\007"
 }
@@ -162,10 +165,6 @@ fi
 # direnv hook
 eval "$(direnv hook zsh)"
 
-function amereast1_dnsresolvers () {
-  sudo sh -c 'echo "nameserver 10.2.33.2\nnameserver 10.2.33.3" >> /etc/resolv.conf'
-}
-
 function delete_squashmerged_tracking_branches() {
   git for-each-ref refs/heads/ "--format=%(refname:short)" | \
     while read branch; do
@@ -173,21 +172,6 @@ function delete_squashmerged_tracking_branches() {
       [[ $(git cherry master $(git commit-tree $(git rev-parse $branch\^{tree}) -p $mergeBase -m _)) == "-"* ]] && \
       git branch -D $branch
     done
-}
-
-function kubectl_ns_cleanup() {
-  for NS in $(kubectl get ns 2>/dev/null | grep Terminating | cut -f1 -d ' '); do
-    kubectl get ns $NS -o json > /tmp/$NS.json
-    sed -i '' "s/\"kubernetes\"//g" /tmp/$NS.json
-    kubectl replace --raw "/api/v1/namespaces/$NS/finalize" -f /tmp/$NS.json
-  done
-}
-
-function kpcs() {
-  # set -x
-  kargs=${@[1,-2]}
-  service=${*[-1]}
-  kubectl $kargs $(kubectl get pod -l app.kubernetes.io/name=$service -o name)
 }
 
 # eval "$(starship init zsh)"
@@ -211,6 +195,7 @@ function vault_auth() {
   AWS_LOGIN_HEADER=api.vault.secrets.$FI.aws.sfdc.cl
   export VAULT_ROLE="${VAULT_ROLE:-kv_pcs-203892273912_pcsserviceinfra-rw}"
   export VAULT_CACERT="${HOME}/dev_cacerts.pem"
+  vault kv get $QUANTUMK_VAULT_PATH
   export VAULT_TOKEN=$(vault login -token-only -address=$VAULT_ADDR -method=aws header_value=$AWS_LOGIN_HEADER role=$VAULT_ROLE)
 }
 
@@ -218,7 +203,7 @@ function vault_auth2() {
   # Export the AWS credentials for one of the roles with the appropriate read/write privilege before running the commands.
   # Or, if you are using vaultconf-basic* pipelines, use *PCSKDeveloperRole*
   export VAULT_ROLE="${VAULT_ROLE:-kv_pcs-203892273912_pcsserviceinfra-rw}"
-  export VAULT_CACERT="~/dev_cacerts.pem"
+  export VAULT_CACERT="${HOME}/dev_cacerts.pem"
   export FI=${FI:-dev1-uswest2}
   AWS_LOGIN_HEADER=api.vault.secrets.$FI.aws.sfdc.cl
   export VAULT_ADDR=https://$AWS_LOGIN_HEADER
@@ -227,7 +212,25 @@ function vault_auth2() {
   vault token lookup
 }
 
-_decode_base64_url() {
+function vault_qk_auth() {
+  set -x
+  export FI=${FI:-dev1-uswest2}
+
+  serviceProvider="${serviceProvider:-pcs}"
+  clientId="${clientId:-pcs-hogs-oauth2-proxy}"
+  TEMPLATE="kv/quantumksharedsecrets/${FI}/realms/${serviceProvider}/${clientId}"
+  export QUANTUMK_VAULT_ROLE=$(echo ${TEMPLATE}-ro | tr '/' '_')
+  export QUANTUMK_VAULT_PATH="${TEMPLATE}/secrets"
+
+  export VAULT_ADDR=https://api.vault.secrets.${FI}.aws.sfdc.cl:443
+  AWS_LOGIN_HEADER=api.vault.secrets.$FI.aws.sfdc.cl
+#  export VAULT_ROLE="${VAULT_ROLE:-kv_pcs-203892273912_pcsserviceinfra-rw}"
+  export VAULT_CACERT="${HOME}/dev_cacerts.pem"
+  export VAULT_TOKEN=$(vault login --token-only --address=$VAULT_ADDR --method=aws header_value=${AWS_LOGIN_HEADER} role="${QUANTUMK_VAULT_ROLE}")
+  vault kv get $QUANTUMK_VAULT_PATH
+}
+
+function _decode_base64_url() {
   local len=$((${#1} % 4))
   local result="$1"
   if [ $len -eq 2 ]; then result="$1"'=='
@@ -238,4 +241,17 @@ _decode_base64_url() {
 
 # $1 => JWT to decode
 # $2 => either 1 for header or 2 for body (default is 2)
-decode_jwt() { _decode_base64_url $(echo -n $1 | cut -d "." -f ${2:-2}) | jq .; }
+function decode_jwt() { _decode_base64_url $(echo -n $1 | cut -d "." -f ${2:-2}) | jq .; }
+
+function rename_bom() {
+  BOM_PATH=$1
+  NEW_NAME=$2
+  jq --arg BOM_NAME $NEW_NAME '.falcon_instance.name = $BOM_NAME' $BOM_PATH
+}
+
+function ocr_latest_screenshot() {
+  screenshotDir=~/Pictures/Screenshots
+  filename=$(ls -tr ${screenshotDir} | tail -1)
+  filepath=${screenshotDir}/${filename}
+  tesseract ${filepath} -
+}
