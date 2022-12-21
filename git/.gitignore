@@ -7,3 +7,5 @@
 tfstates/
 __pycache__/
 *.pyc
+.gitconfig
+!.git
