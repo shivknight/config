@@ -228,7 +228,6 @@ nnoremap <silent> <C-g>l :call FZFOpen(':BLines')<CR>
 nnoremap <silent> <C-n> :bnext<CR>
 nnoremap <silent> <C-p> :bprevious<CR>
 nnoremap <silent> <leader>d :bdelete<CR>
-nnoremap <silent> X :bdelete<CR>
 
 " vim-airline
 let g:airline#extensions#tabline#enabled = 1
