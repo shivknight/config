@@ -74,3 +74,5 @@
 	host = git.soma.salesforce.com
 [merge "ours"]
 	driver = false
+[mergetool]
+	trustExitCode = true
