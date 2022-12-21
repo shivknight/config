@@ -38,8 +38,13 @@ Plugin 'bling/vim-airline'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'towolf/vim-helm'
 Plugin 'alpertuna/vim-header'
+" New plugins
+Plugin 'preservim/tagbar'
+Plugin 'dense-analysis/ale'
 
 call vundle#end()
+
+set diffopt+=internal,algorithm:patience
 
 " ensure ftdetect et al work by including this after the Vundle stuff
 filetype plugin indent on
@@ -135,8 +140,6 @@ let g:go_auto_type_info = 1           " Automatically get signature/type info fo
 let g:go_highlight_diagnostic_errors=0
 let g:go_highlight_diagnostic_warnings=0
 let g:go_list_type = "quickfix"
-let g:go_def_mode='gopls'
-let g:go_info_mode='gopls'
 let g:go_auto_sameids = 1
 nnoremap <leader>F :GoDecls<CR>
 noremap <leader>e :cn<CR>
@@ -270,3 +273,7 @@ let g:header_field_timestamp = 0
 let g:header_field_modified_by = 0
 
 nnoremap \z :setlocal foldexpr=(getline(v:lnum)=~@/)?0:(getline(v:lnum-1)=~@/)\\|\\|(getline(v:lnum+1)=~@/)?1:2 foldmethod=expr foldlevel=0 foldcolumn=2<CR>
+
+"" ALE
+let g:ale_completion_enabled = 1
+set omnifunc=ale#completion#OmniFunc
