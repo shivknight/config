@@ -7,7 +7,6 @@ set rtp+=/usr/local/bin/fzf
 set rtp+=/usr/local/bin/git
 
 " configure Vundle
-filetype on " without this vim emits a zero exit status, later, because of :ft off
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -19,7 +18,6 @@ if filereadable(expand("~/.vimrc.bundles"))
 endif
 
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'pearofducks/ansible-vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-rhubarb'
 Plugin 'tpope/vim-surround'
@@ -27,7 +25,6 @@ Plugin 'tpope/vim-sensible'
 Plugin 'Yggdroot/indentLine'
 Plugin 'hashivim/vim-terraform'
 Plugin 'powerman/vim-plugin-AnsiEsc'
-Plugin 'chrisbra/vim-diff-enhanced'
 Plugin 'adelarsq/vim-matchit'
 Plugin 'will133/vim-dirdiff'
 Plugin 'fatih/vim-go'
@@ -216,19 +213,6 @@ nnoremap <silent> <C-n> :bnext<CR>
 nnoremap <silent> <C-p> :bprevious<CR>
 nnoremap <silent> <leader>d :bdelete<CR>
 nnoremap <silent> X :bdelete<CR>
-
-""" netrw
-" let g:netrw_browse_split = 4
-" let g:netrw_liststyle = 3
-"
-" let g:netrw_browse_split = 4
-" let g:netrw_altv = 1
-" let g:netrw_winsize = 25
-" augroup ProjectDrawer
-"   autocmd!
-" "  autocmd VimEnter * :Vexplore
-" augroup END
-
 
 " vim-airline
 let g:airline#extensions#tabline#enabled = 1
