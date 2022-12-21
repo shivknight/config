@@ -97,7 +97,7 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
 alias vi="vim"
-# alias vim="nvim"
+alias vim="nvim"
 alias dc="docker-compose"
 alias gfor="git fetch origin && git rebase origin/master"
 alias gfur="git fetch upstream && git rebase upstream/master"
