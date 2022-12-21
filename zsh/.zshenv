@@ -24,3 +24,5 @@ fi
 
 export GO111MODULE=on
 export GOPRIVATE="github.com/sfdc-pcg,git.soma.salesforce.com"
+export GH_HOST="git.soma.salesforce.com"
+export GH_ENTERPRISE_TOKEN="<redacted>"
