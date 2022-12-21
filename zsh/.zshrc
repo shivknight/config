@@ -102,6 +102,7 @@ alias dc="docker-compose"
 alias gfor="git fetch origin && git rebase origin/master"
 alias gfur="git fetch upstream && git rebase upstream/master"
 alias ghpc="gh pr create -a @me -r '@public-cloud-start/gia2h'"
+alias zsrc="source ~/.zshrc"
 
 set -o vi
 bindkey "^R" history-incremental-search-backward
