@@ -70,8 +70,6 @@
   insteadOf = https://git.soma.salesforce.com/environments-engine
 [url "git@git.soma.salesforce.com:"]
   insteadOf = https://git.soma.salesforce.com/
-[hub]
-	host = git.soma.salesforce.com
 [merge "ours"]
 	driver = false
 [mergetool]
