@@ -46,12 +46,12 @@
 	gpgsign = true
 [url "git@github.com:"]
 	insteadOf = https://github.com/
-[secrets]
-	providers = git secrets --aws-provider
-	patterns = (\"|')?(AWS|aws|Aws)?_?(SECRET|secret|Secret)?_?(ACCESS|access|Access)?_?(KEY|key|Key)(\"|')?\\s*(:|=>|=)\\s*(\"|')?[A-Za-z0-9/\\+=]{40}(\"|')?
-	patterns = BEGIN.*PRIVATE KEY
-	patterns = (A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}
-	patterns = (\"|')?(AWS|aws|Aws)?_?(ACCOUNT|account|Account)_?(ID|id|Id)?(\"|')?\\s*(:|=>|=)\\s*(\"|')?[0-9]{4}\\-?[0-9]{4}\\-?[0-9]{4}(\"|')?
+# [secrets]
+# 	providers = git secrets --aws-provider
+# 	patterns = (\"|')?(AWS|aws|Aws)?_?(SECRET|secret|Secret)?_?(ACCESS|access|Access)?_?(KEY|key|Key)(\"|')?\\s*(:|=>|=)\\s*(\"|')?[A-Za-z0-9/\\+=]{40}(\"|')?
+# 	patterns = BEGIN.*PRIVATE KEY
+# 	patterns = (A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}
+# 	patterns = (\"|')?(AWS|aws|Aws)?_?(ACCOUNT|account|Account)_?(ID|id|Id)?(\"|')?\\s*(:|=>|=)\\s*(\"|')?[0-9]{4}\\-?[0-9]{4}\\-?[0-9]{4}(\"|')?
 [init]
 	templateDir = ~/.git-templates/git-secrets
 [pager]
@@ -62,11 +62,6 @@
 	rebase = true
 [remote "origin"]
 	prune = true
-[diff "sopsdiffer"]
-	textconv = sops -d
-[credential]
-	helper = !aws --profile CodeCommit codecommit credential-helper $@
-	UseHttpPath = true
 [url "ssh://git@github.com/sfdc-pcg/"]
   insteadOf = https://github.com/sfdc-pcg/
 [url "git@git.soma.salesforce.com:sfdc-pcg"]
