@@ -252,3 +252,173 @@ function ocr_latest_screenshot() {
   filepath=${screenshotDir}/${filename}
   tesseract ${filepath} -
 }
+
+############# Filter service instances belonging to service teams out of
+############# falcon-instance-definintion
+function st() {
+  ST=$(SERVICE_NAME=$1 jq -r '.service_definition[] | select(.name==env.SERVICE_NAME).service_team' falcon-service-definition/1.0/*)
+  SERVICE_TEAM=$ST jq '.team_definition[] | select(.name==env.SERVICE_TEAM) | {shortened_team_name:.shortened_name,team_name:.name,service_owners:[.gus_users+.admins]}' falcon-team-definition/1.0/*
+}
+
+function si() {
+  export SERVICE_NAME=$1
+  ST=$(jq -r '.service_definition[] | select(.name==env.SERVICE_NAME).service_team' falcon-service-definition/1.0/*)
+  SERVICE_TEAM=$ST jq -c '.team_definition[] | select(.name==env.SERVICE_TEAM) | {team_name:.name,shortened_name:.shortened_name,service:env.SERVICE_NAME}' falcon-team-definition/1.0/*
+}
+
+service_types() {
+  FID_FILE=$1
+  jq -r '.functional_domain[].service_instances[].service_type' "${FID_FILE}" | sort -n | uniq > service_types
+}
+
+service_type_to_team() {
+  SERVICE_TYPE_FILE=service_types
+  while read sType; do
+    export sType; pushd .. >/dev/null; st $sType | jq -r '[env.sType, .shortened_team_name, .team_name]|join(" ")'; popd>/dev/null;
+  done< $SERVICE_TYPE_FILE > service_type_map
+}
+
+augment_service_instances() {
+  SERVICE_MAP_FILE=service_type_map
+  FID_FILE=${1}
+  FID_FILE_AUGMENTED=${FID_FILE}.augmented
+  cp ${FID_FILE} ${FID_FILE_AUGMENTED}
+  while read sType shortenedTeamName teamName; do
+    export sType; export shortenedTeamName; export teamName;
+    jq '.functional_domain[].service_instances[] |= (select(.service_type==env.sType) |= .+ {service_team:env.teamName,shortened_name:env.shortenedTeamName})' $FID_FILE_AUGMENTED > f1.json
+    mv f1.json $FID_FILE_AUGMENTED
+  done < $SERVICE_MAP_FILE
+}
+
+filter_service_teams() {
+  FID_FILE=${1}
+  FID_FILE_AUGMENTED=${1}.augmented
+  jq '(.functional_domain[].service_instances | arrays) |=
+    map(select(.service_team | IN(
+      "sam","mesh","fweinfrastructure","publicproxy","ddi","fit","soter","tableau-hyper-sync","sfmaps-services","industries-co","q4mobile","bastion"
+    )))' ${FID_FILE_AUGMENTED} | \
+    jq '.functional_domain[].service_instances[]|= del(.shortened_name,.service_team)' > ${FID_FILE}
+}
+#############
+
+function gh-clone-org() {
+  ORG=${1:-public-cloud-start}
+  mkdir -p "${ORG}"
+  # download a maximum of 1000 org repos and organize them under $ORG
+   gh repo list -L 1000 "${ORG}" --no-archived --source --json languages,name,url --jq '.[] | select(.languages[].node.name=="Go") | .name' | while read -r repo _; do
+   gh repo clone --sparse "${ORG}"/"$repo" "${ORG}"/"${repo}"
+  done
+}
+
+function gh-clone-org-sparse() {
+  ORG=${1:-public-cloud-start}
+  mkdir -p "${ORG}"
+  # download a maximum of 1000 org repos and organize them under $ORG
+   gh repo list -L 1000 "${ORG}" --no-archived --source --json languages,name,url --jq '.[] | select(.languages[].node.name=="Go") | .url' | while read -r repo _; do
+   git -C "${ORG}" clone --filter=blob:none --sparse $repo
+  done
+}
+
+function update-go-version() {
+  setopt +o nomatch
+  for dir in ./*/; do
+    pushd $dir
+    go mod edit -go=1.19
+    gsed -i -r -e 's/go=1.17/go=1.19/g' env.mk Makefile make/*
+    vim Makefile make/standard-go.mk
+    make deps
+    popd
+  done
+}
+
+function create-update-go-pr() {
+  for dir in ./*/; do
+    pushd $dir
+    git switch -c shiv-update-go1.19
+
+    make deps && git add go.* vendor
+    git commit -m "Update to go1.19"
+
+    gsed -i -r -e 's/(pcs-golang-ci-tooling:)(.*)/\157/g' .strata.yml
+    git commit .strata.yml -m "Update golang-ci-tooling"
+    go fmt $(go list ./... | grep -v vendor) && git commit -am "gofmt"
+
+    git push -u origin shiv-update-go1.19
+    gh label create -c '#2ECFD3' go1.19
+    reviewers=$(repeat 3 {random_reviewer} | tr '\n' ',' | sed 's/,$/\n/')
+    echo gh pr create -a @me -b "@W-12038443" -t "Update to go1.19" -l go1.19 -r ${reviewers}
+    popd
+    sleep 3
+  done
+}
+
+function random_reviewer() {
+  typeset -a reviewers
+  RAND=$(od -A n -t d -N 1 /dev/urandom |tr -d ' ')
+  reviewers=(
+    alan-vaghti
+    bgoines
+    cindy-oneill
+    cnadolny
+    cyrus-mahdavi
+    dmelanchenko
+    ecoll
+    grajpal
+    jain-anirekh
+    jonathan-mason
+    lmisiuda
+    msylla
+    pchristopher
+    mmittelstadt
+    purvi-patel
+    robert-nix
+    rvasilev
+    sahir
+    sarahjane-olivas
+    sarthur
+    shiv-pande
+    smith-nathan
+    sofia-viotto
+    v-bhat
+    vdrozd
+    weiteng-huang
+    wmortl
+    xiangjieli
+  )
+  print -r -- ${reviewers[$(( $RAND % ${#reviewers[@]} + 1 ))]}
+}
+
+st_diff() {
+  BOMDIR=lib/fire/1.0.0/boms/
+  FI=dev1-uswest2
+  BOMFILE=${BOMDIR}/hydrated_${FI}.json
+  export FD=scratchpad2
+  LOOKBACK=$1
+  comm -2 -3 \
+    <(git show ${LOOKBACK}:./$BOMFILE | jq -c -r '.falcon_instance.functional_domains[] | select(.name==env.FD).service_teams[] | {service_team:.name,shortened_name:.shortened_name,accountID:.account_id}'|sort -n|uniq) \
+    <(< $BOMFILE | jq -c -r '.falcon_instance.functional_domains[] | select(.name==env.FD).service_teams[] | {service_team:.name,shortened_name:.shortened_name,accountID:.account_id}'|sort -n|uniq)
+}
+
+bom_release_label() {
+  REV_FILE=.git/BISECT_HEAD
+  FI_FILE=./lib/fire/1.0.0/boms/hydrated_dev1-uswest2.json
+  FIND_LABEL="20221111-190413"
+  git bisect start --no-checkout
+  git bisect bad upstream/master
+  git bisect good upstream/master~10000
+
+  while true; do
+    CUR_LABEL=$(git show $(cat .git/BISECT_HEAD):lib/fire/1.0.0/boms/hydrated_dev1-uswest2.json | jq -r '.falcon_instance.release_label')
+    echo $CUR_LABEL
+    if [[ $CUR_LABEL == $FIND_LABEL ]]; then
+      cat $REV_FILE
+      git bisect reset
+      break
+    elif [[ $CUR_LABEL < $FIND_LABEL ]]; then
+      git bisect good
+    elif [[ $CUR_LABEL > $FIND_LABEL ]]; then
+      git bisect bad
+    fi
+  set +x
+  done
+}
