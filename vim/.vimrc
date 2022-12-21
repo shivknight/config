@@ -145,6 +145,9 @@ nnoremap <leader>F :GoDecls<CR>
 noremap <leader>e :cn<CR>
 noremap <leader>E :cp<CR>
 
+au FileType go nmap <leader>doc <Plug>(go-doc-tab)
+let g:go_doc_popup_window = 1
+
 "" vim-delv
 noremap <leader>db :DlvToggleBreakpoint<CR>
 
