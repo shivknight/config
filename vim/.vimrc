@@ -199,10 +199,20 @@ let g:fzf_files_options =
 
 command! FZFNeigh call s:fzf_neighbouring_files()
 nnoremap <leader>s :FZFNeigh<CR>
+
+""" vim-fugitive
 nnoremap <leader>f :GFiles<CR>
-" " Try :GFiles, fallback on :Files
-" command! Gfiles_fallback execute (len(system('git rev-parse'))) ? ':Files' : ':GFiles'
-" nnoremap <leader>f :Gfiles_fallback<CR>
+function ToggleGitStatus()
+  if buflisted(bufname('.git/index'))
+    bdelete .git/index
+  else
+    Git
+  endif
+endfunction
+command ToggleGitStatus call ToggleGitStatus()
+noremap <leader>g :ToggleGitStatus<CR>
+noremap gb :Git blame<CR>
+"""
 
 function! FZFOpen(command_str)
   if (expand('%') =~# 'NERD_tree' && winnr('$') > 1)
