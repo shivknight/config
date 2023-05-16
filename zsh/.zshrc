@@ -162,14 +162,6 @@ fi
 # direnv hook
 eval "$(direnv hook zsh)"
 
-function delete_squashmerged_tracking_branches() {
-  git for-each-ref refs/heads/ "--format=%(refname:short)" | \
-    while read branch; do
-      mergeBase=$(git merge-base master $branch) && \
-      [[ $(git cherry master $(git commit-tree $(git rev-parse $branch\^{tree}) -p $mergeBase -m _)) == "-"* ]] && \
-      git branch -D $branch
-    done
-}
 
 # eval "$(starship init zsh)"
 
@@ -239,12 +231,6 @@ function _decode_base64_url() {
 # $1 => JWT to decode
 # $2 => either 1 for header or 2 for body (default is 2)
 function decode_jwt() { _decode_base64_url $(echo -n $1 | cut -d "." -f ${2:-2}) | jq .; }
-
-function rename_bom() {
-  BOM_PATH=$1
-  NEW_NAME=$2
-  jq --arg BOM_NAME $NEW_NAME '.falcon_instance.name = $BOM_NAME' $BOM_PATH
-}
 
 function ocr_latest_screenshot() {
   screenshotDir=~/Pictures/Screenshots
@@ -421,4 +407,14 @@ bom_release_label() {
     fi
   set +x
   done
+}
+
+cdr() {
+  prefix=$1
+  cd ${prefix}*(/om[1])
+}
+
+vir() {
+  prefix=$1
+  vi ${prefix}*(.om[1])
 }

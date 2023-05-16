@@ -37,6 +37,8 @@
 #        lg = !"git lg1"
 #        rebaseb = rebase -i $(git merge-base master update_jenkinsfile)
         sl = stash list --pretty=format:\"%C(red)%h%C(reset) - %C(dim yellow)(%C(bold magenta)%gd%C(dim yellow))%C(reset) %<(70,trunc)%s %C(green)(%cr) %C(bold blue)<%an>%C(reset)\"
+        upstream-name = !git remote | egrep -o '(upstream|origin)' | tail -1
+        head-branch = !git remote show $(git upstream-name) | awk '/HEAD branch/ {print $NF}'
 [core]
 	excludesfile = ~/.gitignore
 [mergetool "fugitive"]
